@@ -1,0 +1,26 @@
+{
+  "checksums": {
+    "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
+    "templates/etc/security/access.conf.erb": "5da846225556ca1becdc851639b51cc1",
+    "README": "b0cdcfb87f090de76c4316e572e2c3af",
+    "tests/init.pp": "3886b4c09d5448bb3ba2e34aa8e871c6",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "metadata.json": "d34d0b70aba36510fbc2df4e667479ef",
+    "Modulefile": "bc32a3f4fb1b36bdf9e06241f068a51f",
+    "manifests/init.pp": "f3fd7a53170467a501f3756e88864ab0"
+  },
+  "types": [
+
+  ],
+  "description": "UNKNOWN",
+  "project_page": "UNKNOWN",
+  "summary": "UNKNOWN",
+  "source": "UNKNOWN",
+  "dependencies": [
+
+  ],
+  "author": "thartmann",
+  "version": "1.0.0",
+  "name": "thartmann-pam_access",
+  "license": "UNKNOWN"
+}
