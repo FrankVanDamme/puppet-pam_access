@@ -126,15 +126,15 @@
 <% if has_variable?("users") then -%>
 #
 ## User Access 
-<% users.each do |users| -%>
+<% @users.each do |users| -%>
 + : <%= users %> : ALL
 <% end -%>
 ## End Users 
 <% end -%>
 #
 ## Group Access
-<% group.each do |group| -%>
-+ : <%= group %> : ALL
+<% @group.each do |group| -%>
++ : (<%= group %>) : ALL
 <% end -%>
 ## End Groups
 #

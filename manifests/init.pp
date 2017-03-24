@@ -72,12 +72,3 @@ class pam_access {
     } # case 
 } # class
 
-class pam_access::example inherits pam_access {
-   $group += ["foo"]
-   $users += ["foo", "bar", "baz"]
-   File["/etc/security/access.conf"] {
-      content => template("${mod}/etc/security/access.conf.erb"),
-   }
-}
-
-
