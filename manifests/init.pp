@@ -14,10 +14,7 @@
 #   include pam_access::example
 #
 # [Remember: No empty lines between comments and class definition]
-class pam_access {
-
-
-}
+#
 # Sample Usage: 
 #
 # [Remember: No empty lines between comments and class definition]
