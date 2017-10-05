@@ -24,6 +24,7 @@ class pam_access {
    # ex: $group = [sudo, foo, bar]
    $group = [ "sudo" ]
    $users = []
+   $other={}
    file { "/etc/security/access.conf":
          ensure  => "present",
          owner   => "root",

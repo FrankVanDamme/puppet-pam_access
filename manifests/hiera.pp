@@ -13,6 +13,8 @@ class pam_access::hiera inherits pam_access {
     $users = $u_wl - $u_bl
     $group = $g__wl - $g_bl
 
+    $other=hiera_hash( "pam_access", {} )
+
     File["/etc/security/access.conf"] {
 	content => template("${mod}/etc/security/access.conf.erb"),
     }

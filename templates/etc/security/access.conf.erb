@@ -138,6 +138,12 @@
 <% end -%>
 ## End Groups
 #
+## Other
+<% other.each do | who, what | -%>
++ : <%= who %> : <%= what %>
+<% end -%>
+## End other
+#
 ## Administrative Defaults
 #+ : systems : ALL
 #+ : root : 1.1.1.0/24
