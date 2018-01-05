@@ -16,6 +16,6 @@ class pam_access::hiera inherits pam_access {
     $other=hiera_hash( "pam_access", {} )
 
     File["/etc/security/access.conf"] {
-	content => template("${mod}/etc/security/access.conf.erb"),
+	content => template("${module_name}/etc/security/access.conf.erb"),
     }
 }

@@ -18,8 +18,9 @@
 # Sample Usage: 
 #
 # [Remember: No empty lines between comments and class definition]
-class pam_access {
-   $mod = pam_access
+class pam_access (
+    $umask = '0022'
+){
    # place groups or users in the below arrays.
    # ex: $group = [sudo, foo, bar]
    $group = [ "sudo" ]
@@ -31,7 +32,7 @@ class pam_access {
          group   => "root",
          mode    => "644",
          backup  => "true",
-         content => template("${mod}/etc/security/access.conf.erb"),
+         content => template("pam_access/etc/security/access.conf.erb"),
    }
 
     case $::operatingsystem { 
@@ -46,11 +47,13 @@ class pam_access {
 	    }
 	}
 	'debian': { 
+	    $line = "session	optional	pam_mkhomedir.so umask=${umask}"
 	    # FIXME het vieze aan dit commamdo is dat hij de file overschrijft ook al is de module al enabled
 	    $pam_acc_enable = "grep '^[^#].*pam_access' login >/dev/null && grep '^[^#].*pam_access' sshd  >/dev/null     || \
 		sed -i -e 's/^# *\(.*pam_access.*\)/\1/' /etc/pam.d/sshd /etc/pam.d/login"
-	    $enable_mkhomedir = "grep '^[^#].*pam_mkhomedir' /etc/pam.d/common-session >/dev/null   ||   \
-		echo 'session	optional	pam_mkhomedir.so'  >> /etc/pam.d/common-session"
+	    $enable_mkhomedir = "grep '^$line$' /etc/pam.d/common-session >/dev/null   ||   \
+	        sed -i -e '/.*pam_mkhomedir.*/d' /etc/pam.d/common-session ; \
+		echo '$line'  >> /etc/pam.d/common-session"
 	    $enable_umask = "grep '^[^#].*pam_umask' /etc/pam.d/common-session >/dev/null   ||   \
 		echo 'session	optional	pam_umask.so'  >> /etc/pam.d/common-session"
 	    exec { "authconfig-access":
