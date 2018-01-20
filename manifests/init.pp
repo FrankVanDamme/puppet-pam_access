@@ -19,7 +19,7 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class pam_access (
-    $umask = '0022'
+    $homedir_umask = '0022'
 ){
    # place groups or users in the below arrays.
    # ex: $group = [sudo, foo, bar]
@@ -47,7 +47,7 @@ class pam_access (
 	    }
 	}
 	'debian': { 
-	    $homedir_line = "session	optional	pam_mkhomedir.so umask=${umask}"
+	    $homedir_line = "session	optional	pam_mkhomedir.so umask=${homedir_umask}"
 	    $pam_acc_enable = "grep '^[^#].*pam_access' login >/dev/null && grep '^[^#].*pam_access' sshd  >/dev/null     || \
 		sed -i -e 's/^# *\(.*pam_access.*\)/\1/' /etc/pam.d/sshd /etc/pam.d/login"
 	    $enable_mkhomedir = "sed -i -e '/.*pam_mkhomedir.*/d' /etc/pam.d/common-session \
