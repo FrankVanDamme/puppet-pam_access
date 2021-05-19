@@ -48,16 +48,19 @@ class pam_access (
         }
         'debian': { 
             # pam files: login + sshd
+            # enable pam_access module
             $pam_acc_enable = "sed -i -e 's/^# *\(.*pam_access.*\)/\1/' /etc/pam.d/sshd /etc/pam.d/login"
             $pam_acc_enable_unless = "grep '^[^#].*pam_access' login >/dev/null && grep '^[^#].*pam_access' sshd  >/dev/null"
 
             # pam files: common-session
+            # enable pam_mkhomedir module
             $homedir_line = "session	optional	pam_mkhomedir.so umask=${homedir_umask}"
             $enable_mkhomedir = "sed -i -e '/.*pam_mkhomedir.*/d' /etc/pam.d/common-session \
                 && echo '$homedir_line' >> /etc/pam.d/common-session"
             $enable_mkhomedir_unless = "grep '^$homedir_line$' /etc/pam.d/common-session >/tmp/null"
 
             # pam files: common-session
+            # enable pam_umask module
             $enable_umask = "echo 'session	optional	pam_umask.so'  >> /etc/pam.d/common-session"
             $enable_umask_unless = "grep '^[^#].*pam_umask' /etc/pam.d/common-session >/dev/null"
 
