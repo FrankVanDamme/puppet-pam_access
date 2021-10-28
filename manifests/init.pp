@@ -66,10 +66,10 @@ class pam_access (
         'debian': {
             # pam files: login + sshd
             # enable pam_access module
-            $pam_acc_enable = "sed -i -e 's/^# *\(.*pam_access.*\)/\1/' /etc/pam.d/sshd /etc/pam.d/login"
-            $pam_acc_disable = "sed -i -e 's/^ *\(.*pam_access.*\)/#\1/' /etc/pam.d/sshd /etc/pam.d/login"
-            $pam_acc_enable_unless = "grep '^[^#].*pam_access' login >/dev/null && grep '^[^#].*pam_access' sshd  >/dev/null"
-            $pam_acc_disable_onlyif = "grep '^[^#].*pam_access' login >/dev/null || grep '^[^#].*pam_access' sshd  >/dev/null"
+            $pam_acc_enable = 'sed -i -e "s/^# *\(.*pam_access.*\)/\1/" /etc/pam.d/sshd /etc/pam.d/login'
+            $pam_acc_disable = 'sed -i -e "s/^ *\(.*pam_access.*\)/#\1/" /etc/pam.d/sshd /etc/pam.d/login'
+            $pam_acc_enable_unless = 'grep "^[^#].*pam_access" login >/dev/null && grep "^[^#].*pam_access" sshd  >/dev/null'
+            $pam_acc_disable_onlyif = 'grep "^[^#].*pam_access" login >/dev/null || grep "^[^#].*pam_access" sshd  >/dev/null'
 
             # pam files: common-session
             # enable pam_mkhomedir module
