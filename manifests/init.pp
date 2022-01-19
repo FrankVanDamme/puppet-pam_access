@@ -21,6 +21,7 @@
 class pam_access (
     $homedir_umask = '0022',
     $access_control_enable = true,
+    Enum["allow", "deny"] $policy_all = "deny",
 ){
    # place groups or users in the below arrays.
    # ex: $group = [sudo, foo, bar]
@@ -34,6 +35,11 @@ class pam_access (
          mode    => "644",
          backup  => "true",
          content => template("pam_access/etc/security/access.conf.erb"),
+   }
+
+   $policy_all_ = $policy_all ? {
+       "allow" => "+",
+       "deny"  => "-",
    }
 
     case $::operatingsystem {
