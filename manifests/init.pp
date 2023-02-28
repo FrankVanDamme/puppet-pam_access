@@ -23,26 +23,26 @@ class pam_access (
     $access_control_enable = true,
     Enum["allow", "deny"] $policy_all = "deny",
 ){
-   # place groups or users in the below arrays.
-   # ex: $group = [sudo, foo, bar]
-   $group = [ "sudo" ]
-   $users = []
-   $other={}
-   file { "/etc/security/access.conf":
-         ensure  => "present",
-         owner   => "root",
-         group   => "root",
-         mode    => "644",
-         backup  => "true",
-         content => template("pam_access/etc/security/access.conf.erb"),
-   }
+    # place groups or users in the below arrays.
+    # ex: $group = [sudo, foo, bar]
+    $group = [ "sudo" ]
+    $users = []
+    $other={}
+    file { "/etc/security/access.conf":
+        ensure  => "present",
+        owner   => "root",
+        group   => "root",
+        mode    => "644",
+        backup  => "true",
+        content => template("pam_access/etc/security/access.conf.erb"),
+    }
 
-   $policy_all_ = $policy_all ? {
-       "allow" => "+",
-       "deny"  => "-",
-   }
+    $policy_all_ = $policy_all ? {
+        "allow" => "+",
+        "deny"  => "-",
+    }
 
-    case $::operatingsystem {
+    case $facts[os][name] {
         'RedHat', 'CentOS': {
             if ( versioncmp($::facts['os']['release']['major'], '7')  > 0 ){
                 fail ("Red Hat 8 and above not supported!")
@@ -106,9 +106,9 @@ class pam_access (
             }
 
             exec { "enable_mkhomedir":
-                command  => $enable_mkhomedir,
-                unless   => $enable_mkhomedir_unless,
-                path     => "/usr/bin:/usr/sbin:/bin",
+                command => $enable_mkhomedir,
+                unless  => $enable_mkhomedir_unless,
+                path    => "/usr/bin:/usr/sbin:/bin",
             }
 
             exec { "enable_umask":
@@ -117,6 +117,5 @@ class pam_access (
                 path    => "/usr/bin:/usr/sbin:/bin",
             }
         } # debian
-    } # case 
+    } # case
 } # class
-
