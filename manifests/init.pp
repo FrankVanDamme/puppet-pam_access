@@ -74,8 +74,8 @@ class pam_access (
             # enable pam_access module
             $pam_acc_enable = 'sed -i -e "s/^# *\(.*pam_access.*\)/\1/" /etc/pam.d/sshd /etc/pam.d/login'
             $pam_acc_disable = 'sed -i -e "s/^ *\(.*pam_access.*\)/#\1/" /etc/pam.d/sshd /etc/pam.d/login'
-            $pam_acc_enable_unless = 'grep "^[^#].*pam_access" login >/dev/null && grep "^[^#].*pam_access" sshd  >/dev/null'
-            $pam_acc_disable_onlyif = 'grep "^[^#].*pam_access" login >/dev/null || grep "^[^#].*pam_access" sshd  >/dev/null'
+            $pam_acc_enable_unless = 'grep "^[^#].*pam_access" /etc/pam.d/login >/dev/null && grep "^[^#].*pam_access" /etc/pam.d/sshd  >/dev/null'
+            $pam_acc_disable_onlyif = 'grep "^[^#].*pam_access" /etc/pam.d/login >/dev/null || grep "^[^#].*pam_access" /etc/pam.d/sshd  >/dev/null'
 
             # pam files: common-session
             # enable pam_mkhomedir module
@@ -90,14 +90,14 @@ class pam_access (
             $enable_umask_unless = "grep '^[^#].*pam_umask' /etc/pam.d/common-session >/dev/null"
 
             if ( $access_control_enable == true ){
-                exec { "authconfig-access":
+                exec { "authconfig-access-enable":
                     command => $pam_acc_enable,
                     unless  => $pam_acc_enable_unless,
                     path    => "/usr/bin:/usr/sbin:/bin",
                     require => File["/etc/security/access.conf"],
                 }
             } else {
-                exec { "authconfig-access":
+                exec { "authconfig-access-disable":
                     command => $pam_acc_disable,
                     onlyif  => $pam_acc_disable_onlyif,
                     path    => "/usr/bin:/usr/sbin:/bin",
