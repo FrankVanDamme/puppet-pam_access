@@ -22,28 +22,34 @@ class pam_access (
     $homedir_umask = '0022',
     $access_control_enable = true,
     Enum["allow", "deny"] $policy_all = "deny",
+    Array $users_blacklist = [],
+    Array $users_whitelist = [],
+    Array $groups_blacklist = [],
+    Array $groups_whitelist = [],
+    Hash $access_other = {},
 ){
-    # place groups or users in the below arrays.
-    # ex: $group = [sudo, foo, bar]
-    $group = [ "sudo" ]
-    $users = []
-    $other={}
-    file { "/etc/security/access.conf":
-        ensure  => "present",
-        owner   => "root",
-        group   => "root",
-        mode    => "644",
-        backup  => "true",
-        content => template("pam_access/etc/security/access.conf.erb"),
-    }
+
+    $g__wl = union( [ $facts[networking][hostname] ] , $groups_whitelist )
+
+    $users = $users_whitelist - $users_blacklist
+    $group = $g__wl - $groups_blacklist
 
     $policy_all_ = $policy_all ? {
         "allow" => "+",
         "deny"  => "-",
     }
 
+    file { "/etc/security/access.conf":
+        ensure  => "present",
+        owner   => "root",
+        group   => "root",
+        mode    => "0644",
+        backup  => "true",
+        content => template("${module_name}/etc/security/access.conf.erb"),
+    }
+
     case $facts[os][name] {
-        'RedHat', 'CentOS': {
+        'RedHat', 'CentOS', 'Rocky', 'Almalinux': {
             if ( versioncmp($::facts['os']['release']['major'], '7')  > 0 ){
                 fail ("Red Hat 8 and above not supported!")
             }
@@ -117,5 +123,9 @@ class pam_access (
                 path    => "/usr/bin:/usr/sbin:/bin",
             }
         } # debian
+
+        default: {
+            fail("OS not supported!")
+        }
     } # case
 } # class
